@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue计时器</title>
+  <style>
+    .btn {
+      display: inline-block;
+      width: 100px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+      background-color: lightseagreen;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="timer">
+      <span class="hour">{{ hour }} :</span>
+      <span class="minute">{{ minute }} :</span>
+      <span class="second">{{ second }} s</span>
+    </div>
+    <div class="btns">
+      <a class="btn" v-on:click="start">start</a>
+      <a class="btn" v-on:click="stop">stop</a>
+      <a class="btn" v-on:click="continueCount">continue</a>
+      <a class="btn" v-on:click="reset">reset</a>
+    </div>
+  </div>
+
+  <script src="../vue-v2.5.16.js"></script>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          hour: 0,
+          minute: 0,
+          second: 0,
+          timer: null
+        }
+      },
+      methods: {
+        countTime() {
+          if (!this.timer) {
+            this.timer = setInterval(() => {
+              if (this.second >= 0 && this.second < 59) {
+                ++this.second
+                console.log('second:' + this.second)
+              } else if (this.second == 59 && this.minute >= 0 && this.minute < 59) {
+                this.second = 0
+                ++this.minute
+                console.log('minute:' + this.minute)
+              } else if (this.minute == 59 && this.hour >= 0 && this.hour < 23) {
+                this.second = 0
+                this.minute = 0
+                ++this.hour
+                console.log('hour:' + this.hour)
+              }
+              else {
+                clearInterval(this.timer)
+                this.timer = null
+              }
+            }, 1000)
+          }
+        },
+        start() {
+          this.countTime()
+        },
+        reset() {
+          this.hour = 0
+          this.minute = 0
+          this.second = 0
+          timer = clearInterval(this.timer)
+          this.timer = null
+        },
+        continueCount() {
+          console.log(this)
+          this.countTime()
+        },
+        stop() {
+          timer = clearInterval(this.timer)
+          this.timer = null
+        }
+      }
+    })  
+  </script>
+</body>
+
+</html>
